@@ -6,11 +6,11 @@ import { useState } from "react"
 
 export default function Home() {
   const [currentQuiz, setCurrentQuiz] = useState<number>(0)
-  const [amountOfRightQuiz, setAmountOfRightQuiz] = useState<number>(0)
+  const [amountOfRightQuiz, setAmountOfRightQuiz] = useState<boolean[]>([])
   const [isQuizFinished, setIsQuizFinished] = useState<boolean>(false)
 
   function handleChangeCurrentQuiz(quizNumber: number, isWasRight?: boolean, isFinished?: boolean): void {
-    setAmountOfRightQuiz(prev => isWasRight ? prev + 1 : prev)
+    setAmountOfRightQuiz(prev => isWasRight ? [...prev, isWasRight] : [...prev, false])
     if (isFinished) setIsQuizFinished(!isQuizFinished)
     setCurrentQuiz(quizNumber)
   }

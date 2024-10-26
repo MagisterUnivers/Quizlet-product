@@ -1,5 +1,7 @@
 'use client'
 
+import { mockQuiz } from "@/static/mockdata"
+import { CheckCircle, XCircle } from "lucide-react"
 import { useState } from "react"
 
 interface Props {
@@ -7,7 +9,7 @@ interface Props {
   currentQuizNumber: number
   allQuizAmount: number
   isFinished: boolean
-  amountOfRightQuiz: number
+  amountOfRightQuiz: boolean[]
   onQuizChange: (quizNumber: number, isWasRight?: boolean, isFinished?: boolean) => void
 }
 
@@ -31,7 +33,9 @@ export function Quiz({
     return (
       <li className="p-[20px] bg-white m-2 flex flex-col gap-4 min-w-[628px]">
         <div>
-          <h2 className="text-green-700 font-bold mb-2">Amount of Questions correct: {amountOfRightQuiz}</h2>
+          <h2 className="text-green-700 font-bold mb-2">
+            Amount of Questions correct: {amountOfRightQuiz.filter(Boolean).length}
+          </h2>
         </div>
       </li>
     )
@@ -59,13 +63,35 @@ export function Quiz({
             >{item.text}</button>
           ))}
         </ul>
-        <div>
+        <div className="flex flex-col gap-4">
           <button
             title="To next question"
             disabled={!isAnswerSelected}
             className="p-1 bg-green-700 text-white font-semibold w-[80px] rounded-sm disabled:cursor-not-allowed"
             onClick={() => onQuizChange(currentQuizNumber, selectedAnswer?.isCorrect, currentQuizNumber === 3 && true)}
           >Next</button>
+          <div className="flex gap-2">
+            {mockQuiz.map((question, index) => {
+              const isCorrect = amountOfRightQuiz[index]
+              const hasAnswered = isCorrect !== undefined
+
+              return (
+                <div
+                  key={index}
+                  className={`flex justify-center items-center w-8 h-8 rounded-full ${hasAnswered ? (isCorrect ? 'bg-green-500' : 'bg-red-500') : 'bg-zinc-300'
+                    }`}
+                >
+                  {hasAnswered ? (
+                    isCorrect ? (
+                      <CheckCircle className="text-white w-4 h-4" />
+                    ) : (
+                      <XCircle className="text-white w-4 h-4" />
+                    )
+                  ) : null}
+                </div>
+              )
+            })}
+          </div>
         </div>
       </div>
     </li>
