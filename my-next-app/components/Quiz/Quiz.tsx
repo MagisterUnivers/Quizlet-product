@@ -77,7 +77,7 @@ export function Quiz({
 
               return (
                 <div
-                  key={index}
+                  key={question.answers.length}
                   className={`flex justify-center items-center w-8 h-8 rounded-full ${hasAnswered ? (isCorrect ? 'bg-green-500' : 'bg-red-500') : 'bg-zinc-300'
                     }`}
                 >
